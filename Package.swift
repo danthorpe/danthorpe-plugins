@@ -9,6 +9,7 @@ let package = Package(
     ],
     products: [
         .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"]),
+        .plugin(name: "SwiftLint --Fix", targets: ["SwiftLintFixPlugin"]),
     ],
     targets: [
         .binaryTarget(
@@ -22,6 +23,22 @@ let package = Package(
             dependencies: [
                 "SwiftLintBinary"
             ]
+        ),
+        .plugin(
+            name: "SwiftLintFixPlugin",
+            capability: .command(
+                intent: .custom(
+                    verb: "swiftlint fix",
+                    description: "Invokes swiftlint --fix, which will fix all correctable violations."
+                ),
+                permissions: [
+                    .writeToPackageDirectory(reason: "All correctable violations are fixed by SwiftLint.")
+                ]
+            ),
+            dependencies: [
+                "SwiftLintBinary"
+            ]
         )
+
     ]
 )
