@@ -4,6 +4,9 @@ import PackagePlugin
 @main
 struct SwiftLintPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
+        guard let isCi = ProcessInfo().environment["CI"], isCi == "TRUE" else {
+            return []
+        }
         guard let target = target as? SwiftSourceModuleTarget else {
             return []
         }
