@@ -4,10 +4,10 @@ import PackagePlugin
 @main
 struct SwiftLintPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
-        guard let isCi = ProcessInfo().environment["CI"], isCi == "TRUE" else {
+        guard let target = target as? SwiftSourceModuleTarget else {
             return []
         }
-        guard let target = target as? SwiftSourceModuleTarget else {
+        if let isCi = ProcessInfo().environment["CI"], isCi == "TRUE" {
             return []
         }
         let tool = try context.tool(named: "swiftlint")
