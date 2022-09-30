@@ -8,8 +8,8 @@ let package = Package(
         .macOS(.v12)
     ],
     products: [
-        .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"]),
-        .plugin(name: "SwiftLint --Fix", targets: ["SwiftLintFixPlugin"]),
+        .plugin(name: "SwiftLint", targets: ["SwiftLintPlugin"]),
+        .plugin(name: "SwiftLintAutocorrect", targets: ["SwiftLintAutocorrectPlugin"]),
     ],
     targets: [
         .binaryTarget(
@@ -25,11 +25,11 @@ let package = Package(
             ]
         ),
         .plugin(
-            name: "SwiftLintFixPlugin",
+            name: "SwiftLintAutocorrectPlugin",
             capability: .command(
                 intent: .custom(
-                    verb: "swiftlint fix",
-                    description: "Invokes swiftlint --fix, which will fix all correctable violations."
+                    verb: "swiftlint",
+                    description: "Invokes swiftlint --autocorrect, which will fix all correctable violations."
                 ),
                 permissions: [
                     .writeToPackageDirectory(reason: "All correctable violations are fixed by SwiftLint.")
