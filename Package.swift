@@ -2,6 +2,13 @@
 
 import PackageDescription
 
+var package = Package(name: "danthorpe-plugins")
+
+package.dependencies = [
+    .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0"),
+    .package(url: "https://github.com/apple/swift-protobuf", from: "1.20.2"),
+]
+
 // MARK: - Names
 
 let SwiftLint = "SwiftLint"
@@ -11,17 +18,11 @@ let Protobuf = "Protobuf"
 
 // MARK: Products
 
-extension Product {
-    static let swiftLint: Product = .plugin(
-        name: SwiftLint, targets: [SwiftLint]
-    )
-    static let swiftLintAutocorrect: Product = .plugin(
-        name: SwiftLintAutocorrect, targets: [SwiftLintAutocorrect]
-    )
-    static let protobuf: Product = .plugin(
-        name: Protobuf, targets: [Protobuf]
-    )
-}
+package.products = [
+    .plugin(name: SwiftLint, targets: [SwiftLint]),
+    .plugin(name: SwiftLintAutocorrect, targets: [SwiftLintAutocorrect]),
+    .plugin(name: Protobuf, targets: [Protobuf]),
+]
 
 // MARK: Targets
 
@@ -56,6 +57,14 @@ extension Target {
     )
 }
 
+package.targets = [
+    .swiftLintBinary,
+    .swiftLint,
+    .swiftLintAutocorrect,
+    .protobuf
+]
+
+
 // MARK: - Dependencies
 
 extension Target.Dependency {
@@ -69,18 +78,3 @@ extension Target.Dependency {
         name: "protoc-gen-grpc-swift", package: "grpc-swift"
     )
 }
-
-var package = Package(name: "danthorpe-plugins")
-
-package.dependencies = [
-    .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.0.0"),
-    .package(url: "https://github.com/apple/swift-protobuf", from: "1.20.2"),
-]
-
-package.products = [
-    .swiftLint, .swiftLintAutocorrect, .protobuf
-]
-
-package.targets = [
-    .swiftLintBinary, .swiftLint, .swiftLintAutocorrect, .protobuf
-]
